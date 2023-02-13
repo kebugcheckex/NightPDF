@@ -28,8 +28,8 @@ const {
     nativeTheme,
 } = require('electron');
 const path = require('path');
-const { menuTemplate } = require('./app/menutemplate');
-const { autoUpdater } = require('electron-updater');
+import menutemplate from './app/menutemplate';
+import { autoUpdater } from 'electron-updater';
 let wins = [];
 let menuIsConfigured = false;
 
@@ -39,7 +39,7 @@ const linux = process.platform === 'linux';
 const windows = process.platform === 'win32';
 const mac = process.platform === 'darwin';
 
-function getpath(filePath) {
+function getpath(filePath: string) {
     return path.parse(filePath).base;
 }
 
@@ -54,7 +54,7 @@ function createWindow(filename = null) {
         minWidth: 565,
         minHeight: 200,
         webPreferences: {
-            preload: path.resolve(path.join(__dirname, 'app/preload.js')),
+            preload: path.resolve(path.join(__dirname, '../app/preload.js')),
         },
         resizable: true,
         titleBarStyle: 'default',
@@ -76,12 +76,12 @@ function createWindow(filename = null) {
 
     win.loadFile('app/index.html');
     if (DEBUG) {
-        win.openDevTools();
+        win.webContents.openDevTools();
     }
     let wc = win.webContents;
     // if the window url changes from the inital one,
     // block the change and use xdg-open to open it
-    wc.on('will-navigate', function (e, url) {
+    wc.on('will-navigate', function (e: Event, url: string) {
         if (url != wc.getURL()) {
             e.preventDefault();
             shell.openExternal(url);
@@ -106,15 +106,18 @@ function createWindow(filename = null) {
     });
 
     if (!menuIsConfigured) {
-        const menu = Menu.buildFromTemplate(menuTemplate);
+        let template = menutemplate.createMenu();
+        const menu = Menu.buildFromTemplate(template);
 
-        menu.getMenuItemById('file-open').click = () => {
+        menu.getMenuItemById('file-open')!.click = () => {
             openNewPDF();
         };
 
-        menu.getMenuItemById('file-print').click = () => {
+        menu.getMenuItemById('file-print')!.click = () => {
             const focusedWin = BrowserWindow.getFocusedWindow();
-            focusedWin.webContents.send('file-print');
+            if (focusedWin) {
+                focusedWin.webContents.send('file-print');
+            }
         };
 
         Menu.setApplicationMenu(menu);
@@ -123,11 +126,11 @@ function createWindow(filename = null) {
 
     const openNewPDF = () => {
         dialog
-            .showOpenDialog(null, {
+            .showOpenDialog(win, {
                 properties: ['openFile'],
                 filters: [{ name: 'PDF Files', extensions: ['pdf'] }],
             })
-            .then((dialogReturn) => {
+            .then((dialogReturn: any) => {
                 const filename = dialogReturn['filePaths'][0];
                 if (filename) {
                     if (wins.length === 0) {
@@ -147,19 +150,21 @@ function createWindow(filename = null) {
     };
 
     ipcMain.removeAllListeners('togglePrinting');
-    ipcMain.once('togglePrinting', (_e, msg) => {
+    ipcMain.once('togglePrinting', (_e: Event, msg: string) => {
         const menu = Menu.getApplicationMenu();
-        menu.getMenuItemById('file-print').enabled = Boolean(msg);
+        if (menu) {
+            menu.getMenuItemById('file-print')!.enabled = Boolean(msg);
+        }
     });
 
     ipcMain.removeAllListeners('newWindow');
-    ipcMain.once('newWindow', (_e, msg) => {
+    ipcMain.once('newWindow', (_e: Event, msg: undefined | null) => {
         console.log('opening ', msg, ' in new window');
         createWindow(msg);
     });
 
     ipcMain.removeAllListeners('resizeWindow');
-    ipcMain.once('resizeWindow', (_e, _msg) => {
+    ipcMain.once('resizeWindow', (_e: Event, _msg: any) => {
         const { width, height } = win.getBounds();
         if (width < 1000 || height < 650) {
             win.setResizable(true);
@@ -169,16 +174,16 @@ function createWindow(filename = null) {
     });
 
     ipcMain.removeAllListeners('openNewPDF');
-    ipcMain.once('openNewPDF', (_e, _msg) => {
+    ipcMain.once('openNewPDF', (_e: Event, _msg: null) => {
         openNewPDF();
     });
 
-    ipcMain.handle('getPath', (_event, args) => {
+    ipcMain.handle('getPath', (_e: Event, args: string) => {
         return getpath(args);
     });
 }
 
-let fileToOpen = '';
+let fileToOpen: any = '';
 
 const args = process.argv;
 const argsLength = args.length;
@@ -186,14 +191,16 @@ if (argsLength > 1 && args[argsLength - 1].endsWith('.pdf')) {
     fileToOpen = args[argsLength - 1];
 }
 
-app.on('open-file', (event, path) => {
-    event.preventDefault();
+app.on('open-file', (e: Event, path: any) => {
+    e.preventDefault();
     if (app.isReady()) {
         if (wins.length === 0) {
             createWindow(path.toString());
         } else {
             const focusedWin = BrowserWindow.getFocusedWindow();
-            focusedWin.webContents.send('file-open', path.toString());
+            if (focusedWin) {
+                focusedWin.webContents.send('file-open', path.toString());
+            }
         }
     }
     fileToOpen = path.toString();
