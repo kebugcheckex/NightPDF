@@ -1,6 +1,5 @@
-import { Configuration } from "electron-builder";
-
-const config: Configuration = {
+/** @type electron-builder.Configuration */
+const config = {
 	appId: "io.github.lunarequest.NightPDF",
 	productName: "NightPDF",
 	files: [
@@ -121,4 +120,4 @@ if (process.env.OUTPUTDIR === "1") {
 	}
 }
 
-export default config;
+module.exports = config;
