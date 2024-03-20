@@ -1,9 +1,8 @@
-const path = require("path");
-const builder = require("electron-builder");
-const { flipFuses, FuseVersion, FuseV1Options } = require("@electron/fuses");
+import path from "node:path";
+import builder from "electron-builder";
+import { flipFuses, FuseVersion, FuseV1Options } from "@electron/fuses";
 
-/** @type electron-builder.Configuration */
-const config = {
+const config: builder.Configuration = {
 	appId: "io.github.lunarequest.NightPDF",
 	productName: "NightPDF",
 	files: [
@@ -119,8 +118,7 @@ const config = {
 	dmg: {
 		sign: false,
 	},
-	/** @param {builder.AfterPackContext} context */
-	afterPack: async (context) => {
+	afterPack: async (context: builder.AfterPackContext) => {
 		await addElectronFuses(context);
 	},
 };
@@ -130,8 +128,7 @@ if (process.env.OUTPUTDIR === "1") {
 		config.linux.target = ["dir"];
 	}
 }
-/** @param {builder.AfterPackContext} context  */
-async function addElectronFuses(context) {
+async function addElectronFuses(context: builder.AfterPackContext) {
 	const {
 		appOutDir,
 		packager: { appInfo },
@@ -163,4 +160,4 @@ async function addElectronFuses(context) {
 	});
 }
 
-module.exports = config;
+export default config;
