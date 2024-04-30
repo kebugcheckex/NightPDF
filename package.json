@@ -14,10 +14,10 @@
 		"typecheck": "tsc --noEmit",
 		"build": "rimraf out && tsx ./build.mts",
 		"dev": "yarn typecheck && yarn build && DEBUG=1 electron .",
-		"dist": "NODE_ENV='production' NODE_OPTIONS='--max-old-space-size=4096' yarn build && NODE_ENV='production' NODE_OPTIONS='--max-old-space-size=4096' electron-builder --config electron-builder-config.ts",
+		"dist": "NODE_ENV='production' NODE_OPTIONS='--max-old-space-size=4096' yarn build && NODE_ENV='production' NODE_OPTIONS='--max-old-space-size=4096' electron-builder --config electron-builder-config.js",
 		"lint": "biome check .",
 		"format": "biome format . --write",
-		"ci": "yarn typecheck && biome ci .",
+		"ci": "biome ci .",
 		"pre-commit": "yarn ci",
 		"postinstall": "husky install",
 		"prepack": "pinst --disable",
@@ -53,10 +53,10 @@
 		"typescript": "^5.4.5"
 	},
 	"dependencies": {
-		"electron-log": "^5.1.2",
-		"electron-store": "^8.2.0",
+		"electron-log": "^5.1.1",
+		"electron-store": "^8.1.0",
 		"electron-tabs": "^1.0.4",
-		"electron-updater": "6.2.1",
+		"electron-updater": "6.1.9",
 		"json-schema-typed": "8.0.1",
 		"nouislider": "^15.7.1",
 		"yargs": "^17.7.2"

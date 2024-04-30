@@ -16,6 +16,7 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
+/* eslint no-unused-vars: [ "error", { "argsIgnorePattern": "^_" } ] */
 import {
 	app,
 	BrowserWindow,
@@ -183,19 +184,6 @@ function createWindow(
 
 	win.webContents.removeAllListeners("did-finish-load");
 	win.webContents.once("did-finish-load", () => {
-		const date = new Date();
-		const currentYear = date.getFullYear();
-		const startDate = new Date(currentYear, 10, 13);
-		const endDate = new Date(currentYear, 10, 19);
-
-		if (date >= startDate && date <= endDate) {
-			console.log(NOTIFICATION_BODY);
-			new Notification({
-				title: NOTIFICATION_TITLE,
-				body: NOTIFICATION_BODY,
-			}).show();
-		}
-
 		// avoid race condition
 		if (DEBUG) {
 			win.webContents.openDevTools();
