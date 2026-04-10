@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git -C /d/Source/NightPDF log --oneline)",
+      "Bash(git -C /d/Source/NightPDF count-objects -vH)"
+    ]
+  }
+}
