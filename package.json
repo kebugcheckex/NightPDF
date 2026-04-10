@@ -3,7 +3,6 @@
 	"version": "v3.0.0-beta5",
 	"description": "Dark Mode for PDFs",
 	"main": "out/main/app.js",
-	"packageManager": "yarn@4.1.1",
 	"repository": "https://github.com/Lunarequest/NightPDF",
 	"homepage": "https://github.com/Lunarequest/NightPDF#readme",
 	"bugs": {
@@ -13,13 +12,13 @@
 	"scripts": {
 		"typecheck": "tsc --noEmit",
 		"build": "rimraf out && tsx ./build.mts",
-		"dev": "yarn typecheck && yarn build && DEBUG=1 electron .",
-		"dist": "NODE_ENV='production' NODE_OPTIONS='--max-old-space-size=4096' yarn build && NODE_ENV='production' NODE_OPTIONS='--max-old-space-size=4096' electron-builder --config electron-builder-config.js",
+		"dev": "npm run typecheck && npm run build && electron .",
+		"dist": "NODE_ENV='production' NODE_OPTIONS='--max-old-space-size=4096' npm run build && NODE_ENV='production' NODE_OPTIONS='--max-old-space-size=4096' electron-builder --config electron-builder-config.js",
 		"lint": "biome check .",
 		"format": "biome format . --write",
 		"ci": "biome ci .",
-		"pre-commit": "yarn ci",
-		"postinstall": "husky install",
+		"pre-commit": "npm run ci",
+		"postinstall": "husky",
 		"prepack": "pinst --disable",
 		"postpack": "pinst --enable"
 	},
