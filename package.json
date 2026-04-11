@@ -17,10 +17,7 @@
 		"lint": "biome check .",
 		"format": "biome format . --write",
 		"ci": "biome ci .",
-		"pre-commit": "npm run ci",
-		"postinstall": "husky",
-		"prepack": "pinst --disable",
-		"postpack": "pinst --enable"
+		"pre-commit": "npm run ci"
 	},
 	"author": {
 		"name": "Lunarequest",
@@ -44,8 +41,6 @@
 		"esbuild": "^0.23.0",
 		"esbuild-plugin-glob": "^2.2.3",
 		"figlet": "^1.7.0",
-		"husky": "^9.1.4",
-		"pinst": "^3.0.0",
 		"postcss": "^8.4.41",
 		"rimraf": "^6.0.1",
 		"sass": "^1.77.8",
