@@ -1,5 +1,7 @@
 # NightPDF
 
+> This project was forked from the now public archieve repo [Lunarequest/NightPDF](https://github.com/Lunarequest/NightPDF). I will continue to make improvements to it.
+
 Dark Mode PDF reader
 
 It uses Electron but my eyes dont care.
