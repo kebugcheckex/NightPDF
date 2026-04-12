@@ -345,7 +345,7 @@ function createWindow(
 let fileToOpen: string | string[] = "";
 let pageToOpen: number | null = null;
 
-const argv = yargs
+const argv = yargs(process.argv.slice(2))
 	.scriptName("NightPDF")
 	.usage("Usage: $0 [-p] <pdf>")
 	.example("$0 -p 5 pdf.pdf", "Loads pdf on the 5th page")
@@ -425,9 +425,8 @@ app.whenReady().then(() => {
 	}
 
 	for (const action of keybinds.actions) {
-		localShortcut.register(
-			keybinds.getActionKeybindsTrigger(action),
-			() => {
+		for (const trigger of keybinds.getActionKeybindsTrigger(action)) {
+			localShortcut.register(trigger, () => {
 				const focusedWin = BrowserWindow.getFocusedWindow();
 				if (focusedWin) {
 					focusedWin.webContents.send(
@@ -435,8 +434,8 @@ app.whenReady().then(() => {
 						keybinds.getActionData(action),
 					);
 				}
-			},
-		);
+			});
+		}
 	}
 
 	// register Ctrl+1 to Ctrl+9 shortcuts

@@ -16,7 +16,7 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
-import { contextBridge, ipcRenderer } from "electron";
+import { contextBridge, ipcRenderer, webUtils } from "electron";
 import type { Keybinds, Keybind, ModifierKeyMap } from "../helpers/settings";
 
 contextBridge.exposeInMainWorld("api", {
@@ -30,6 +30,10 @@ contextBridge.exposeInMainWorld("api", {
 
 	ResolvePath: async (filePath: string) => {
 		return await ipcRenderer.invoke("ResolvePath", filePath);
+	},
+
+	getPathForFile: (file: File) => {
+		return webUtils.getPathForFile(file);
 	},
 
 	openExternel: (url: string) => {
