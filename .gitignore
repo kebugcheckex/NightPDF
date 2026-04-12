@@ -1,0 +1,9 @@
+node_modules
+.DS_Store
+dist
+xcode
+keys
+.env
+.yarn/
+out
+*pdf
