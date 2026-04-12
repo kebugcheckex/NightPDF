@@ -40,7 +40,7 @@ async function openFile(
 		files = [files];
 	}
 	for (const file of files) {
-		const path = typeof file === "string" ? file : file.path;
+		const path = typeof file === "string" ? file : window.api.getPathForFile(file);
 		const resolved_file = await window.api.ResolvePath(path);
 		const title = await window.api.getFileName(path);
 		// check if file is already open

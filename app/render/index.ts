@@ -32,6 +32,7 @@ declare global {
 			GetVersion(): Promise<string>;
 			getFileName(arg0: string): Promise<string>;
 			ResolvePath(arg0: string): Promise<string>;
+			getPathForFile(file: File): string;
 			SetBind(key: string, value: Keybinds): Promise<null>;
 			GetSettings(): Promise<NightPDFSettings>;
 			SetSetting(
